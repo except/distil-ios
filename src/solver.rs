@@ -4,8 +4,8 @@ use rand::Rng;
 use serde::Serialize;
 use std::collections::HashMap;
 
+static VERSIONS: &'static [&str] = &["13.4", "13.4.1", "13.5", "13.5.1", "13.6", "13.6.1", "13.7"];
 static SCREEN_RESOLUTIONS: &'static [(usize, usize)] = &[(375, 812), (414, 896)];
-static APPLICATION_MANIFEST: &'static str = "2.AdVcYX_6cIB15rBXSWb1pUb9aa48my0Doxp30jgW63NLyRNKh1eelG9GwMxRC2ups8te4VstDQrvm3zRsnlWCQ0qNDLGNb3viRDYQ_NkyJA0RrXYukm3_fXoe8Ca3-TLKK6oa-Etd1p7_z2yc9t9-bIlpZ5dMX366JK91R7S3g==";
 static COUNTRY_LANGUAGES: &'static [(&str, &str)] = &[
     ("GB", "en"),
     ("US", "en"),
@@ -17,14 +17,15 @@ static COUNTRY_LANGUAGES: &'static [(&str, &str)] = &[
     ("IT", "it"),
     ("SE", "sv"),
 ];
+static APPLICATION_MANIFEST: &'static str = "2.AdVcYX_6cIB15rBXSWb1pUb9aa48my0Doxp30jgW63NLyRNKh1eelG9GwMxRC2ups8te4VstDQrvm3zRsnlWCQ0qNDLGNb3viRDYQ_NkyJA0RrXYukm3_fXoe8Ca3-TLKK6oa-Etd1p7_z2yc9t9-bIlpZ5dMX366JK91R7S3g==";
 
 pub struct Solver<'a> {
     session: &'a str,
     question: &'a str,
-    device: Device<'a>,
+    device: &'a Device<'a>,
 }
 
-#[derive(Serialize, Debug, Default)]
+#[derive(Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Device<'a> {
     bundle_identifier: &'a str,
@@ -127,7 +128,7 @@ impl<'a> Device<'a> {
             ),
         );
 
-
+        let version = VERSIONS.choose(&mut rng).unwrap();
         let (width, height) = SCREEN_RESOLUTIONS.choose(&mut rng).unwrap();
         let (country_code, language_code) = COUNTRY_LANGUAGES.choose(&mut rng).unwrap();
 
@@ -148,7 +149,7 @@ impl<'a> Device<'a> {
             name: "",
             uuid: device_uuid,
             vendor_id: vendor_id,
-            version: "13.5",
+            version,
         }
     }
 
@@ -181,11 +182,11 @@ impl<'a> Device<'a> {
 }
 
 impl<'a> Solver<'a> {
-    pub fn new(question: &'a str, session: &'a str) -> Self {
+    pub fn new(question: &'a str, session: &'a str, device: &'a Device<'a>) -> Self {
         Solver {
             session,
             question,
-            device: Device::new(),
+            device,
         }
     }
 
