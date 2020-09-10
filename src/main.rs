@@ -1,18 +1,18 @@
 mod solver;
-use byteorder::{BigEndian, ByteOrder, LittleEndian};
 use solver::Solver;
-use std::str::from_utf8_unchecked;
 
 fn main() {
-    let body = "{\n  \"application_manifest\" : \"2.AdVcYX_6cIB15rBXSWb1pUb9aa48my0Doxp30jgW63NLyRNKh1eelG9GwMxRC2ups8te4VstDQrvm3zRsnlWCQ0qNDLGNb3viRDYQ_NkyJA0RrXYukm3_fXoe8Ca3-TLKK6oa-Etd1p7_z2yc9t9-bIlpZ5dMX366JK91R7S3g==\"\n}";
     // // // dbg!(body.len());
     // // let body = serde_json::to_string_pretty(&value).unwrap();
-    dbg!(solver::encode_payload(&body));
+    // dbg!(solver::encode_payload(&body));
     // // let device = solver::Device::new();
     // // dbg!(&device);
 
-    let solver = Solver::new("f7eff4cc-cbe4-4d3e-916f-1711b38e7afa");
-    dbg!(solver.solve());
+    let initial_payload = solver::initial_payload(None);
+    dbg!(initial_payload.unwrap());
+    let solver = Solver::new("bed41483-2834-400c-8a9d-0960ac80c8e2", "2.AeI9ZL4rqT1nTmmZigF2l2rzzNe3jXswovuWhfmj25qB6otijpD_oXiEeLP34a22l21TgO6EYzsRjWc8fJ9mchO1AlSr80jv1PRMHTaDnhZWWeIpeJhFB3YWHV20OiyDBEvdbEqSakrFxG-5HR57yIvOemLwMXa4EdBET6e4YIX5h58OAGP4YqwtqTUsCzb_PjwSlubCqaTkfzj3UhDB4NnpyYf-x_dfleCgxuVTNTqH8S1y1kgaFd85-_BaDSwlYP5fnl59X5YAZ6J5cbXFUqUtfOtaLsiH3TFeSrn9CqUcInHxQA5evo5Anst2qJjs1AjZx9pzHtOo4Gan7HIdS1gK3zFfgpzqeIfmdPBLZBTWaLchRyvgNE7zFMjEkM3lP1yWcf4JnNBo-XO7xfOVRmeQhpuoxTQ=");
+
+    dbg!(solver.solve().unwrap());
     // // // println!("{}", );
 
     // // let pre = "{\"application_manifest\":\"2.AdVcYX_6cIB15rBXSWb1pUb9aa48my0Doxp30jgW63NLyRNKh1eelG9GwMxRC2ups8te4VstDQrvm3zRsnlWCQ0qNDLGNb3viRDYQ_NkyJA0RrXYukm3_fXoe8Ca3-TLKK6oa-Etd1p7_z2yc9t9-bIlpZ5dMX366JK91R7S3g==\"}";
